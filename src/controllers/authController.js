@@ -1,8 +1,19 @@
 const express = require('express');
+const jwt = require('jsonwebtoken');
+const { hash } = require('bcryptjs');
+const router = express.Router();
+
 //import do arquivo que conecta com o banco
 const pool = require('../database');
+const authConfig = require('../config/auth');
 
-const router = express.Router();
+
+const getGenerateToken = (user) => {
+    console.log("gerei ->",user.id);
+    return jwt.sign({id: user.id},authConfig.secret,{
+        expiresIn: 86400
+    });
+}
 
 router.post('/cadastrar', async (req,res) => {
     try {
@@ -32,12 +43,20 @@ router.get('/all', async (req,res) => {
     }
 });
 
-router.post('./authenticate', async (req,res) => {
+router.post('/authenticate', async (req,res) => {
     const {email, password} = req.body;
 
-    const user = await 
+    let user = await (await pool.query("SELECT email, senha,id FROM pessoa"));
+    user = user.rows[0];
+    console.log("Usuário",user.id);
+    if (!user)
+        return res.status(400).send({error: 'User no found'});
+    
+    const token = jwt.sign({id: user.id},authConfig.secret,{
+        expiresIn: 86400
+    });
 
-
+    res.send({user, token: getGenerateToken(user)});
 });
 
 module.exports = app => app.use('/auth', router);
