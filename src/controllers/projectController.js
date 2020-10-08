@@ -1,14 +1,13 @@
 const express = require('express');
 const authMiddleware = require('../middlewares/auth');
 
-
 const router = express.Router();
-
+const pool = require('../database');
+const authConfig = require('../config/auth');
 
 router.use(authMiddleware);
 
 router.get('/', (req, res) => {
-    //console.log("Vendo projects -> ", req);
     res.send({ok: true, user: req.userId});
 })
 
