@@ -1,6 +1,5 @@
 const express = require('express');
 const getGenerateToken = require('./getToken');
-//const authMiddleware = require('../middlewares/auth');
 
 const router = express.Router();
 const pool = require('../database');
@@ -15,12 +14,12 @@ router.post('/cadastrar', async (req,res) => {
                     req.body.genero,req.body.data_nascimento,req.body.estado_civil]);
 
         user = user.rows[0];
-       console.log(user);
         await pool.query('COMMIT')
         return res.status(200).send({status: true ,message: "ok", token: getGenerateToken(user) });
       } catch (e) {
-        await pool.query('ROLLBACK')
+        await pool.query('ROLLBACK');
+        return res.status(500).send({status: false });
       }
 });
 
-module.exports = app => app.use('/', router);
+module.exports = app => app.use('/user', router);
