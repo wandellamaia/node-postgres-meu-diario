@@ -1,13 +1,13 @@
 const express = require('express');
-const authMiddleware = require('../middlewares/auth');
+const authMiddleware = require('../../middlewares/auth');
 
 const jwt = require('jsonwebtoken');
-const authConfig = require('../config/auth.json');
+const authConfig = require('../../config/auth.json');
 
 const router = express.Router();
-const pool = require('../database');
+const pool = require('../../database');
 
-const getId = require('./getId');
+const getId = require('../register/getId');
 
 router.use(authMiddleware);
 
@@ -16,7 +16,6 @@ router.use(authMiddleware);
 // })
 
 router.post('/registerStory', async (req, res) => {
-    
     //teste para verificar o id
     try {
         let pessoa_id;
@@ -30,7 +29,7 @@ router.post('/registerStory', async (req, res) => {
         
         let id = await pool.query(queryText, [req.body.data_relato,req.body.humor,req.body.titulo,
             req.body.descricao,pessoa_id]);
-        
+        console.log("Id ->", id.rows[0].id);
         await pool.query('COMMIT')
         return res.status(200).send({status: true, id: id.rows[0].id });
     } catch(e){

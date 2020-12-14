@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 
 //import do arquivo que conecta com o banco
-const authConfig = require('../config/auth');
+const authConfig = require('../../config/auth');
 
 
 const getGenerateToken = (user) => {
