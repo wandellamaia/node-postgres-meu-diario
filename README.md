@@ -5,7 +5,7 @@
 <p>Após fazer a cópia do deste arquivo em sua máquina, pode seguir as instruções abaixo:</p>
 <ol>
   <li>Entrar na pasta node-postgres-meu-diario e atravês dela abrir o terminal.</li>
-  <li>Tea</li>
-  <li>Milk</li>
+  <li>Digite no terminal: cd src</li>
+  <li>Digite no terminal: nodemon server.js</li>
 </ol>
 
